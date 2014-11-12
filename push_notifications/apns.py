@@ -48,7 +48,7 @@ def _apns_create_socket():
 		raise ImproperlyConfigured("The APNS certificate file at %r is not readable: %s" % (certfile, e))
 
 	sock = socket.socket()
-	sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_SSLv3, certfile=certfile)
+	sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1, certfile=certfile)
 	sock.connect((SETTINGS["APNS_HOST"], SETTINGS["APNS_PORT"]))
 
 	return sock
