@@ -224,6 +224,7 @@ def apns_send_message(
 	collapse_id: str = None,
 	mutable_content: bool = False,
 	err_func: ErrFunc = None,
+	aps_kwargs: dict = {},
 ):
 	"""
 	Sends an APNS notification to a single registration_id.
@@ -259,6 +260,7 @@ def apns_send_message(
 		collapse_id=collapse_id,
 		mutable_content=mutable_content,
 		err_func=err_func,
+		aps_kwargs=aps_kwargs,
 	)
 
 	for result in results.values():
@@ -284,6 +286,7 @@ def apns_send_bulk_message(
 	collapse_id: str = None,
 	mutable_content: bool = False,
 	err_func: ErrFunc = None,
+	aps_kwargs: dict = {}
 ):
 	"""
 	Sends an APNS notification to one or more registration_ids.
@@ -322,6 +325,7 @@ def apns_send_bulk_message(
 			collapse_id=collapse_id,
 			mutable_content=mutable_content,
 			err_func=err_func,
+			aps_kwargs=aps_kwargs,
 		))
 
 		results = {}
@@ -367,12 +371,13 @@ async def _send_bulk_request(
 	collapse_id: str = None,
 	mutable_content: bool = False,
 	err_func: ErrFunc = None,
+	aps_kwargs: dict = {},
 ):
 	client = _create_client(
 		creds=creds, application_id=application_id, topic=topic, err_func=err_func
 	)
 
-	aps_kwargs = {}
+	aps_kwargs = aps_kwargs or {}
 	if mutable_content:
 		aps_kwargs["mutable-content"] = mutable_content
 
