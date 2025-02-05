@@ -2,7 +2,7 @@ import asyncio
 import time
 
 from dataclasses import asdict, dataclass
-from typing import Awaitable, Callable, Dict, Optional, Union
+from typing import Awaitable, Callable, Dict, Optional, Union, List
 
 from aioapns import APNs, ConnectionError, NotificationRequest
 from aioapns.common import NotificationResult
@@ -69,7 +69,7 @@ class Alert:
 	The key for a localized title string. Specify this key instead of the title key to retrieve the title from your app’s Localizable.strings files. The value must contain the name of a key in your strings file
 	"""
 
-	title_loc_args: list[str] = NotSet
+	title_loc_args: List[str] = NotSet
 	"""
 	An array of strings containing replacement values for variables in your title string. Each %@ character in the string specified by the title-loc-key is replaced by a value from this array. The first item in the array replaces the first instance of the %@ character in the string, the second item replaces the second instance, and so on.
 	"""
@@ -79,7 +79,7 @@ class Alert:
 	The key for a localized subtitle string. Use this key, instead of the subtitle key, to retrieve the subtitle from your app’s Localizable.strings file. The value must contain the name of a key in your strings file.
 	"""
 
-	subtitle_loc_args: list[str] = NotSet
+	subtitle_loc_args: List[str] = NotSet
 	"""
 	An array of strings containing replacement values for variables in your title string. Each %@ character in the string specified by subtitle-loc-key is replaced by a value from this array. The first item in the array replaces the first instance of the %@ character in the string, the second item replaces the second instance, and so on.
 	"""
@@ -89,7 +89,7 @@ class Alert:
 	The key for a localized message string. Use this key, instead of the body key, to retrieve the message text from your app’s Localizable.strings file. The value must contain the name of a key in your strings file.
 	"""
 
-	loc_args: list[str] = NotSet
+	loc_args: List[str] = NotSet
 	"""
 	An array of strings containing replacement values for variables in your message text. Each %@ character in the string specified by loc-key is replaced by a value from this array. The first item in the array replaces the first instance of the %@ character in the string, the second item replaces the second instance, and so on.
 	"""
@@ -103,7 +103,7 @@ class Alert:
 	A dictionary that contains sound information for critical alerts. For regular notifications, use the sound string instead.
 	"""
 
-	def asDict(self) -> dict[str, any]:
+	def asDict(self) -> Dict[str, any]:
 		python_dict = asdict(self)
 		return {
 			key.replace("_", "-"): value
@@ -269,7 +269,7 @@ def apns_send_message(
 
 
 def apns_send_bulk_message(
-	registration_ids: list[str],
+	registration_ids: List[str],
 	alert: Union[str, Alert],
 	application_id: str = None,
 	creds: Credentials = None,
@@ -352,7 +352,7 @@ def apns_send_bulk_message(
 
 
 async def _send_bulk_request(
-	registration_ids: list[str],
+	registration_ids: List[str],
 	alert: Union[str, Alert],
 	application_id: str = None,
 	creds: Credentials = None,
