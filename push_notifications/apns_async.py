@@ -3,6 +3,7 @@ import time
 
 from dataclasses import asdict, dataclass
 from typing import Awaitable, Callable, Dict, Optional, Union, List
+from asgiref.sync import async_to_sync
 
 from aioapns import APNs, ConnectionError, NotificationRequest
 from aioapns.common import NotificationResult
@@ -309,7 +310,7 @@ def apns_send_bulk_message(
 		results: Dict[str, str] = {}
 		inactive_tokens = []
 
-		responses = asyncio.run(_send_bulk_request(
+		responses = _send_bulk_request(
 			registration_ids=registration_ids,
 			alert=alert,
 			application_id=application_id,
@@ -326,7 +327,7 @@ def apns_send_bulk_message(
 			mutable_content=mutable_content,
 			err_func=err_func,
 			aps_kwargs=aps_kwargs,
-		))
+		)
 
 		results = {}
 		errors = []
@@ -355,6 +356,7 @@ def apns_send_bulk_message(
 		raise APNSServerError(status=e.__class__.__name__)
 
 
+@async_to_sync
 async def _send_bulk_request(
 	registration_ids: List[str],
 	alert: Union[str, Alert],
